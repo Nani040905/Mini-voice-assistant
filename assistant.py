@@ -32,9 +32,10 @@ def process_command(query):
     # 3. Answer Questions (using Wikipedia)
     elif 'wikipedia' in query:
         try:
-            speak('Searching Wikipedia...')
+            # We speak "Searching Wikipedia" separately, but only the final result is logged
+            speak('Searching Wikipedia...') 
             search_query = query.replace("wikipedia", "").strip() 
-            results = wikipedia.summary(search_query, sentences=2)
+            results = wikipedia.summary(search_query, sentences=2, auto_suggest=False)
             
             output_text = f"According to Wikipedia: {results}"
             
@@ -64,6 +65,7 @@ def main():
     
     speak("Initializing Mini Jarvis...")
     
+    # Greeting based on time of day
     hour = datetime.datetime.now().hour
     if 0 <= hour < 12:
         speak("Good Morning!")

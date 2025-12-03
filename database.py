@@ -13,8 +13,7 @@ COLLECTION_NAME = "command_history"
 def init_db():
     """Initializes the MongoDB client and returns the history collection."""
     try:
-        client = MongoClient(MONGO_URI)
-        # The following line will raise an exception if the server is unreachable
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000) # 5 second timeout
         client.admin.command('ping') 
         db = client[DATABASE_NAME]
         history_collection = db[COLLECTION_NAME]
@@ -35,7 +34,8 @@ def log_command(user_input, assistant_output, collection):
         "timestamp": datetime.datetime.now(),
         "user_command": user_input,
         "assistant_response": assistant_output,
-        "success": True if assistant_output not in ["I'm not programmed to do that yet. Try asking me the time, or to open a website.", "Sorry, I didn't quite catch that. Could you say that again?", "Unrecognized command."] else False
+        # Check if the output suggests the command was handled successfully
+        "success": not any(phrase in assistant_output for phrase in ["I didn't quite catch that", "not programmed to do that", "couldn't find a Wikipedia page"])
     }
 
     try:

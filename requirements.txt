@@ -3,5 +3,4 @@ pyttsx3
 SpeechRecognition
 wikipedia
 pymongo
-
 pyaudio
