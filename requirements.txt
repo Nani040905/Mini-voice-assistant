@@ -1,0 +1,7 @@
+# requirements.txt
+
+pyttsx3
+SpeechRecognition
+wikipedia
+webbrowser
+pymongo
